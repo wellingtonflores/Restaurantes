@@ -56,3 +56,18 @@ export const atualizarProdutos = async (req, res) => {
         res.status(500).json({ error: 'Erro ao atualizar o produto' });
     }
 };
+
+export const deletarProdutos = async (req, res) => {
+    const id = req.params.id
+    try {
+        const result = await db.query("SELECT * FROM produtos WHERE id = $1",[id]);
+        if(result.rows.length < 1){
+            return res.json({ message: "Não existe produto com esse id"});
+        }
+        await db.query("DELETE FROM produtos WHERE id = $1",[id]);
+        return res.status(200).json({ message: "Produto deletado com sucesso"});
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Erro ao deletar produto" });
+    }
+}
