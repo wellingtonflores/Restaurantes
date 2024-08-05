@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Produto</title>
+</head>
+<body>
+    <h1>Produto</h1>
+    <div id="produto-info">
+        <p id="nome"></p>
+        <p id="preco"></p>
+        <p id="categoria"></p>
+        <img id="produto-foto" src="" alt="Foto do produto" />
+    </div>
+
+    <script>
+        // Substitua o ID pelo ID do produto desejado
+        const idProduto = 3;
+
+        fetch(`http://localhost:4000/api/produtos/${idProduto}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data) { // Uso correto do termo
+                    document.getElementById('nome').textContent = `Nome: ${data.nome}`;
+                    document.getElementById('preco').textContent = `Preço: ${data.preco}`;
+                    document.getElementById('categoria').textContent = `Categoria: ${data.categoria}`;
+                    
+                    // Definir a imagem com base64
+                    document.getElementById('produto-foto').src = `data:image/jpeg;base64,${data.foto}`;
+                } else {
+                    console.error('Produto não encontrado:', data.error);
+                }
+            })
+            .catch(error => console.error('Erro ao buscar produto:', error));
+    </script>
+</body>
+</html>

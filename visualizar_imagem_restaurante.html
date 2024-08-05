@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Restaurante</title>
+</head>
+<body>
+    <h1>Restaurante</h1>
+    <div id="restaurante-info">
+        <p id="nome"></p>
+        <p id="endereco"></p>
+        <p id="horario"></p>
+        <img id="restaurante-foto" src="" alt="Foto do Restaurante" />
+    </div>
+
+    <script>
+        // Substitua o ID pelo ID do restaurante desejado
+        const idRestaurante = 13;
+
+        fetch(`http://localhost:4000/api/restaurantes/${idRestaurante}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.restaurante) {
+                    document.getElementById('nome').textContent = `Nome: ${data.restaurante.nome}`;
+                    document.getElementById('endereco').textContent = `Endereço: ${data.restaurante.endereco}`;
+                    document.getElementById('horario').textContent = `Horário de Funcionamento: ${data.restaurante.horarariofuncionamento}`;
+                    
+                    // Definir a imagem com base64
+                    document.getElementById('restaurante-foto').src = `data:image/jpeg;base64,${data.restaurante.foto}`;
+                } else {
+                    console.error(data.error);
+                }
+            })
+            .catch(error => console.error('Erro ao buscar restaurante:', error));
+    </script>
+</body>
+</html>
